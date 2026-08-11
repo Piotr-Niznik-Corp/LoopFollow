@@ -107,6 +107,7 @@ jobs:
           target_repo_token: ${{ secrets.GH_PAT }}
           upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
           upstream_sync_repo: ${{ env.UPSTREAM_REPO }}
+          upstream_pull_args: '--strategy-option=ours'
 
       # Display a sample message based on the sync output var 'has_new_commits'
       - name: New commits found
@@ -226,6 +227,15 @@ jobs:
       # Sync the GitHub runner clock with the Windows time server (workaround as suggested in https://github.com/actions/runner/issues/2996)
       - name: Sync clock
         run: sudo sntp -sS time.windows.com
+
+      - name: Apply custom icons and display name
+        run: |
+          mkdir -p LoopFollow/Resources/AppIcon.appiconset
+          cp Custom/1024.svg LoopFollow/Resources/Assets.xcassets/AppIcon.appiconset/loopfollow-icon.svg
+          cp Custom/1024.png LoopFollow/Resources/Assets.xcassets/AppIcon.appiconset/1024.png
+          cp Custom/1024.png LoopFollow/Resources/Assets.xcassets/AppIcon.appiconset/1024-dark.png
+          cp Custom/1024.png LoopFollow/Resources/Assets.xcassets/AppIcon.appiconset/1024-tinted.png
+          cp Custom/LoopFollowDisplayNameConfig.xcconfig LoopFollowDisplayNameConfig.xcconfig
 
       # Build signed IPA file
       - name: Fastlane Build & Archive
